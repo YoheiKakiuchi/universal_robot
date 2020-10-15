@@ -1,0 +1,16 @@
+rarm:
+  - shoulder_pan_joint  : rarm-shoulder-y
+  - shoulder_lift_joint : rarm-shoulder-p
+  - elbow_joint         : rarm-elbow-p
+  - wrist_1_joint       : rarm-wrist-p
+  - wrist_2_joint       : rarm-wrist-r
+  - wrist_3_joint       : rarm-wrist-y
+
+rarm-end-coords:
+  parent: wrist_3_link
+  translate : [0, 0.1, 0] ## frange
+#  translate : [0, 0.2, 0] ## frange
+  rotate    : [0.70710678118655, 0.70710678118655, 0.0, 180.0]
+
+angle-vector:
+  reset-pose : [0, 0, 0, 0, 0, 0]

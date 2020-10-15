@@ -1,0 +1,6 @@
+UR5e コントロールbox
+475mm x 423mm x 268mm / 12kg
+
+roscd ur_e_description
+rosrun xacro xacro --inorder $(rospack find ur_e_description)/urdf/dual_ur5e_robot.urdf.xacro > dual_ur5e.urdf
+rosrun euscollada collada2eus -I dual_ur5e.urdf -C dual_ur5e.yaml -O dual_ur5e.l

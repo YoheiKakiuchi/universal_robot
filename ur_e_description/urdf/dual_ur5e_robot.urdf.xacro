@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       name="dual_ur5e" >
+
+  <!-- common stuff -->
+  <xacro:include filename="$(find ur_e_description)/urdf/common.gazebo.xacro" />
+
+  <!-- ur5e -->
+  <xacro:include filename="$(find ur_e_description)/urdf/ur5e.urdf.xacro" />
+
+  <!-- arm -->
+  <xacro:ur5e_robot prefix="right_" joint_limited="true"
+    shoulder_pan_lower_limit="${-pi}" shoulder_pan_upper_limit="${pi}"
+    shoulder_lift_lower_limit="0" shoulder_lift_upper_limit="${2*pi}"
+    elbow_joint_lower_limit="${-pi}" elbow_joint_upper_limit="${pi}"
+    wrist_1_lower_limit="${0}" wrist_1_upper_limit="${2*pi}"
+    wrist_2_lower_limit="${-pi}" wrist_2_upper_limit="${pi}"
+    wrist_3_lower_limit="${-pi}" wrist_3_upper_limit="${pi}"
+  />
+
+  <xacro:ur5e_robot prefix="left_" joint_limited="true"
+    shoulder_pan_lower_limit="${-pi}" shoulder_pan_upper_limit="${pi}"
+    shoulder_lift_lower_limit="${-pi}" shoulder_lift_upper_limit="${pi}"
+    elbow_joint_lower_limit="${-pi}" elbow_joint_upper_limit="${pi}"
+    wrist_1_lower_limit="${-pi}" wrist_1_upper_limit="${pi}"
+    wrist_2_lower_limit="${-pi}" wrist_2_upper_limit="${pi}"
+    wrist_3_lower_limit="${-pi}" wrist_3_upper_limit="${pi}"
+    />
+
+  <link name="fixed_base" />
+
+  <joint name="left_fixed_base_joint" type="fixed">
+    <parent link="fixed_base" />
+    <child  link="left_base_link" />
+    <origin xyz="0.0  0.165 0.0" rpy="-2.35619449019234 0.0 0.0" />
+    <!-- (send cds :rotate -pi/2 :x) (send cds :rotate (deg2rad -45) :x :world) / -45deg -->
+  </joint>
+  <joint name="right_fixed_base_joint" type="fixed">
+    <parent link="fixed_base" />
+    <child  link="right_base_link" />
+    <origin xyz="0.0 -0.165 0.0" rpy="-2.35619449019234 0.0 3.14159265358979" />
+    <!-- (send cds :rotate pi/2 :x) (send cds :rotate pi :y :world) (send cds :rotate (deg2rad  45) :x :world) / 45deg -->
+  </joint>
+
+  <link name="dual_arm_base" >
+    <visual>
+      <origin xyz="0 -0.4 0" rpy="1.5707963267949 0.0 0.0" />
+      <geometry>
+        <mesh filename="package://ur_e_description/meshes/ur5e/dual_ur5_base.stl" />
+      </geometry>
+      <material name="misumi">
+        <color rgba="0.75 0.75 0.75 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 -0.4 0" rpy="1.5707963267949 0.0 0.0" />
+      <geometry>
+        <mesh filename="package://ur_e_description/meshes/ur5e/dual_ur5_base.stl" />
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1000" />
+      <origin rpy="0 0 0" xyz="0.0 0.0 0.8"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0"
+               iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <joint name="base_to_fixed" type="fixed">
+    <parent link="dual_arm_base" />
+    <child  link="fixed_base" />
+    <origin xyz="0.04 0.0 1.44" rpy="0.0 0.0 0.0" />
+  </joint>
+
+  <link name="table_plane">
+    <visual>
+      <origin xyz="0.3 0 0.01" />
+      <geometry>
+        <box size="0.6 1.2 0.02" />
+      </geometry>
+      <material name="table">
+        <color rgba="0.7 0.6 0.5 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.3 0 0.01" />
+      <geometry>
+        <box size="0.6 1.2 0.02" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="controller_plane0">
+    <visual>
+      <origin xyz="0.3 0 0.01" />
+      <geometry>
+        <box size="0.6 0.8 0.02" />
+      </geometry>
+      <material name="plane">
+        <color rgba="0.6 0.6 0.6 1.0"/>
+      </material>
+    </visual>
+  </link>
+  <link name="controller_plane1">
+    <visual>
+      <origin xyz="0.3 0 0.01" />
+      <geometry>
+        <box size="0.6 0.8 0.02" />
+      </geometry>
+      <material  name="plane" />
+    </visual>
+  </link>
+
+  <joint name="base_to_table_plane" type="fixed">
+    <parent link="dual_arm_base" />
+    <child  link="table_plane" />
+    <origin xyz="0.0 0.0 0.8" rpy="0.0 0.0 0.0" />
+  </joint>
+  <joint name="base_to_c_plane0" type="fixed">
+    <parent link="dual_arm_base" />
+    <child  link="controller_plane0" />
+    <origin xyz="0.0 0.0 0.2" rpy="0.0 0.0 0.0" />
+  </joint>
+  <joint name="base_to_c_plane1" type="fixed">
+    <parent link="dual_arm_base" />
+    <child  link="controller_plane1" />
+    <origin xyz="0.0 0.0 0.5" rpy="0.0 0.0 0.0" />
+  </joint>
+
+  <link name="controller0">
+    <visual>
+      <origin xyz="0.3 0 0.134" />
+      <geometry>
+        <box size="0.475 0.423 0.268" />
+      </geometry>
+      <material name="controller">
+        <color rgba="0.5 0.5 0.6 1.0"/>
+      </material>
+    </visual>
+  </link>
+  <link name="controller1">
+    <visual>
+      <origin xyz="0.3 0 0.134" />
+      <geometry>
+        <box size="0.475 0.423 0.268" />
+      </geometry>
+      <material name="controller"/>
+    </visual>
+  </link>
+  <joint name="base_to_c0" type="fixed">
+    <parent link="dual_arm_base" />
+    <child  link="controller0" />
+    <origin xyz="0.0 0.0 0.22" rpy="0.0 0.0 0.0" />
+  </joint>
+  <joint name="base_to_c1" type="fixed">
+    <parent link="dual_arm_base" />
+    <child  link="controller1" />
+    <origin xyz="0.0 0.0 0.52" rpy="0.0 0.0 0.0" />
+  </joint>
+  <!-- TODO: endcoords -->
+</robot>
