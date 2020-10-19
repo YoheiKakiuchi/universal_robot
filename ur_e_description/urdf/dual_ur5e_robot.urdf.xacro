@@ -16,7 +16,7 @@
     wrist_1_lower_limit="${0}" wrist_1_upper_limit="${2*pi}"
     wrist_2_lower_limit="${-pi}" wrist_2_upper_limit="${pi}"
     wrist_3_lower_limit="${-pi}" wrist_3_upper_limit="${pi}"
-  />
+    />
 
   <xacro:ur5e_robot prefix="left_" joint_limited="true"
     shoulder_pan_lower_limit="${-pi}" shoulder_pan_upper_limit="${pi}"
@@ -32,14 +32,18 @@
   <joint name="left_fixed_base_joint" type="fixed">
     <parent link="fixed_base" />
     <child  link="left_base_link" />
-    <origin xyz="0.0  0.165 0.0" rpy="-2.35619449019234 0.0 0.0" />
+    <!--origin xyz="0.0  0.165 0.0" rpy="-2.35619449019234 0.0 0.0" /-->
     <!-- (send cds :rotate -pi/2 :x) (send cds :rotate (deg2rad -45) :x :world) / -45deg -->
+    <origin xyz="0.0  0.150 0.0" rpy="-1.5707963267949 0.0 0.0" />  <!-- 0deg -->
+    <!--origin xyz="0.0  0.165 0.0" rpy="-0.78539816339745 0.0 0.0" /--> <!-- 45deg -->
   </joint>
   <joint name="right_fixed_base_joint" type="fixed">
     <parent link="fixed_base" />
     <child  link="right_base_link" />
-    <origin xyz="0.0 -0.165 0.0" rpy="-2.35619449019234 0.0 3.14159265358979" />
+    <!--origin xyz="0.0 -0.165 0.0" rpy="-2.35619449019234 0.0 3.14159265358979" /-->
     <!-- (send cds :rotate pi/2 :x) (send cds :rotate pi :y :world) (send cds :rotate (deg2rad  45) :x :world) / 45deg -->
+    <origin xyz="0.0 -0.150 0.0" rpy="-1.5707963267949 0.0 3.14159265358979" /> <!-- 0deg -->
+    <!--origin xyz="0.0 -0.165 0.0" rpy="-0.78539816339745 0.0 3.14159265358979" /-->  <!-- 45deg -->
   </joint>
 
   <link name="dual_arm_base" >
@@ -155,5 +159,106 @@
     <child  link="controller1" />
     <origin xyz="0.0 0.0 0.52" rpy="0.0 0.0 0.0" />
   </joint>
-  <!-- TODO: endcoords -->
+
+  <link name="dual_arm_booth">
+    <visual>
+      <origin rpy="1.5707963267949 0.0 0.0" xyz="0 -0.75 0"/>
+      <geometry>
+        <mesh filename="package://ur_e_description/meshes/ur5e/dual_ur5_booth.stl"
+              scale="0.001 0.001 0.001" />
+      </geometry>
+      <material name="misumi">
+        <color rgba="0.75 0.75 0.75 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="1.5707963267949 0.0 0.0" xyz="0 -0.75 0"/>
+      <geometry>
+        <mesh filename="package://ur_e_description/meshes/ur5e/dual_ur5_booth.stl"
+              scale="0.001 0.001 0.001" />
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1000"/>
+      <origin rpy="0 0 0" xyz="0.0 0.0 0.8"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+  </link>
+  <joint name="base_to_booth" type="fixed">
+    <parent link="dual_arm_base"/>
+    <child link="dual_arm_booth"/>
+    <origin rpy="0.0 0.0 0.0" xyz="-0.11 0.0 0.0"/>
+  </joint>
+
+  <link name="display">
+   <visual>
+     <geometry>
+       <box size="0.03 0.817 0.342"/>
+     </geometry>
+     <material name="Display">
+       <color rgba="0.15 0.15 0.15 1.0"/>
+     </material>
+   </visual>
+   <collision>
+     <geometry>
+       <box size="0.03 0.817 0.342"/>
+     </geometry>
+   </collision>
+  </link>
+  <joint name="base_to_dispaly" type="fixed">
+    <parent link="dual_arm_base"/>
+    <child  link="display"/>
+    <origin rpy="0.0 0.2 0.0" xyz="0.0 0.0 1.72"/>
+  </joint>
+
+  <!-- pan_tilt -->
+  <xacro:include filename="$(find ur_e_description)/pan_tilt/pan_tilt_kinect.urdf.xacro" />
+  <xacro:pan_tilt_kinect />
+  <joint name="" type="fixed" >
+    <parent link="dual_arm_base" />
+    <child  link="pan_tilt_BASE" />
+    <origin rpy="0.0 0.0 -1.5707963267949" xyz="0.08 0.0 1.505"/>
+  </joint>
+
+  <!-- hand -->
+  <link name="lhand">
+   <visual>
+     <geometry>
+       <mesh filename="package://ur_e_description/meshes/RG6Gripper.stl" />
+     </geometry>
+     <material name="Gripper">
+       <color rgba="0.10 0.10 0.20 1.0"/>
+     </material>
+   </visual>
+   <collision>
+     <geometry>
+       <mesh filename="package://ur_e_description/meshes/RG6Gripper.stl" />
+     </geometry>
+   </collision>
+  </link>
+  <joint name="larm_to_lhand" type="fixed">
+    <parent link="left_wrist_3_link"/>
+    <child  link="lhand"/>
+    <!--origin rpy="1.5707963267949 0.0 -1.5707963267949" xyz="0.025 0.120 0.0"/--> <!-- side -->
+    <origin rpy="1.5707963267949 0.0 3.14159265358979" xyz="0.0 0.105 0.0"/> <!-- up/down -->
+  </joint>
+  <link name="rhand">
+   <visual>
+     <geometry>
+       <mesh filename="package://ur_e_description/meshes/RG6Gripper.stl" />
+     </geometry>
+     <material name="Gripper" />
+   </visual>
+   <collision>
+     <geometry>
+       <mesh filename="package://ur_e_description/meshes/RG6Gripper.stl" />
+     </geometry>
+   </collision>
+  </link>
+  <joint name="rarm_to_rhand" type="fixed">
+    <parent link="right_wrist_3_link"/>
+    <child  link="rhand"/>
+    <origin rpy="1.5707963267949 0.0 1.5707963267949" xyz="-0.025 0.120 0.0"/> <!-- side -->
+    <!--origin rpy="1.5707963267949 0.0 3.14159265358979" xyz="0.0 0.105 0.0"/--> <!-- up/down -->
+  </joint>
 </robot>

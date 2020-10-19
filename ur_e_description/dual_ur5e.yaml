@@ -12,20 +12,32 @@ larm:
   - left_wrist_1_joint       : larm-wrist-p
   - left_wrist_2_joint       : larm-wrist-r
   - left_wrist_3_joint       : larm-wrist-y
+head:
+  - pan_tilt_JOINT0  : neck-y
+  - pan_tilt_JOINT1  : neck-p
 
+# rarm-end-coords:
+#   parent: right_wrist_3_link
+#   translate : [0, 0.1, 0] ## frange
+# #  translate : [0, 0.2, 0] ## frange
+#   rotate    : [0.70710678118655, 0.70710678118655, 0.0, 180.0]
+# larm-end-coords:
+#   parent: left_wrist_3_link
+#   translate : [0, 0.1, 0] ## frange
+# #  translate : [0, 0.2, 0] ## frange
+#   rotate    : [0.70710678118655, 0.70710678118655, 0.0, 180.0]
 rarm-end-coords:
   parent: right_wrist_3_link
-  translate : [0, 0.1, 0] ## frange
-#  translate : [0, 0.2, 0] ## frange
-  rotate    : [0.70710678118655, 0.70710678118655, 0.0, 180.0]
+  translate : [0.12, 0.121, 0]
+  rotate    : [1.0, 0.0, 0.0, 90.0]
 larm-end-coords:
   parent: left_wrist_3_link
-  translate : [0, 0.1, 0] ## frange
-#  translate : [0, 0.2, 0] ## frange
-  rotate    : [0.70710678118655, 0.70710678118655, 0.0, 180.0]
-
+  translate : [0, 0.27, 0]
+  rotate    : [0.57735026918963, 0.57735026918963, 0.57735026918963, 120.0]
 angle-vector:
    reset-pose : [0, 180, 0, 180, 0, 0,
-                 0,   0, 0,   0, 0, 0, ]
-   reset-manip-pose : [0, 270, -90, 270, -45, 0,
-                       0, -90,  90, -90,  45, 0, ]
+                 0,   0, 0,   0, 0, 0,
+                 0, 0]
+   reset-manip-pose : [0, 270, -90, 270, 45, 0,
+                       0, -90,  90, -90, -45, 0,
+                       0, 0]
