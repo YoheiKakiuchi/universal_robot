@@ -64,7 +64,7 @@
 
     <!-- link lengths used in model -->
     <xacro:property name="shoulder_height" value="${d1}" />
-    <xacro:property name="upper_arm_length" value="${-a2}" />
+    <xacro:property name="upper_arm_length" value="${-a2 + 0.05555}" />
     <xacro:property name="forearm_length" value="${-a3}" />
     <xacro:property name="wrist_1_length" value="${d4}" />
     <xacro:property name="wrist_2_length" value="${d5}" />

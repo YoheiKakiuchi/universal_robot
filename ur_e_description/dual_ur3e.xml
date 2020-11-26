@@ -1,0 +1,10 @@
+<robot file="/path_to/dual_ur3e.dae">
+  <manipulator name="larm" >
+    <base>left_base_link</base>
+    <effector>left_tool0</effector>
+    <Translation>0 0 0</Translation>
+    <rotationaxis>0 0 0 0</rotationaxis>
+  </manipulator>
+</robot>
+<!-- rosrun xacro xacro -inorder $(rospack find ur_e_description)/urdf/dual_ur3e_robot.urdf.xacro > dual_ur3e.urdf -->
+<!-- rosrun collada_urdf urdf_to_collada dual_ur3e.urdf dual_ur3e.dae -->

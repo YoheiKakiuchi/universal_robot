@@ -48,7 +48,7 @@
 
   <link name="dual_arm_base" >
     <visual>
-      <origin xyz="0 -0.4 0" rpy="1.5707963267949 0.0 0.0" />
+      <!--origin xyz="0 -0.4 0" rpy="1.5707963267949 0.0 0.0" /-->
       <geometry>
         <mesh filename="package://ur_e_description/meshes/ur5e/dual_ur5_base.stl" />
       </geometry>
@@ -57,7 +57,7 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0 -0.4 0" rpy="1.5707963267949 0.0 0.0" />
+      <!--origin xyz="0 -0.4 0" rpy="1.5707963267949 0.0 0.0" /-->
       <geometry>
         <mesh filename="package://ur_e_description/meshes/ur5e/dual_ur5_base.stl" />
       </geometry>
@@ -160,7 +160,8 @@
     <origin xyz="0.0 0.0 0.52" rpy="0.0 0.0 0.0" />
   </joint>
 
-  <link name="dual_arm_booth">
+  <!-- booth -->
+  <!--link name="dual_arm_booth">
     <visual>
       <origin rpy="1.5707963267949 0.0 0.0" xyz="0 -0.75 0"/>
       <geometry>
@@ -188,7 +189,7 @@
     <parent link="dual_arm_base"/>
     <child link="dual_arm_booth"/>
     <origin rpy="0.0 0.0 0.0" xyz="-0.11 0.0 0.0"/>
-  </joint>
+  </joint-->
 
   <link name="display">
    <visual>
